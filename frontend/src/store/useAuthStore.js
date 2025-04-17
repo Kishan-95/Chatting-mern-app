@@ -3,8 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {io} from "socket.io-client"
 
-
-const BASE_URL = "https://fictional-space-train-r4wxrv9r46gvh599v-5001.app.github.dev"
+const BASE_URL = window.location.origin;
 
 export const useAuthStore = create((set,get)=>({
     authUser:null,

@@ -1,6 +1,8 @@
 import axios from "axios";
 
+const API_URL = window.location.origin + '/api';
+
 export const axiosInstance = axios.create({
-    baseURL: "https://fictional-space-train-r4wxrv9r46gvh599v-5001.app.github.dev/api",
-    withCredentials:true,
-})
+    baseURL: API_URL,
+    withCredentials: true,
+});

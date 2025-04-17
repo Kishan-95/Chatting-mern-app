@@ -8,4 +8,10 @@ router.get("/users",protectRoute,getUsersForSidebar)
 router.get("/:id",protectRoute,getMessages)
 router.post("/send/:id",protectRoute,sendMessage)
 
+router.stack.forEach((layer) => {
+  if (layer.route) {
+    console.log(`Message Route registered: ${Object.keys(layer.route.methods)[0].toUpperCase()} ${layer.route.path}`);
+  }
+});
+
 export default router;

@@ -2,13 +2,13 @@ import {Server} from "socket.io"
 import http from "http"
 import express from "express"
 
-
 const app = express()
 const server = http.createServer(app)
 
-const io = new Server(server,{
-    cors:{
-        origin:["https://fictional-space-train-r4wxrv9r46gvh599v-5173.app.github.dev"]
+const io = new Server(server, {
+    cors: {
+        origin: true, // Allow all origins since we're serving frontend from same origin
+        credentials: true
     }
 })
 

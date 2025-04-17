@@ -1,14 +1,22 @@
-# Node modules
+# Dependencies
 node_modules/
+/.pnp
+.pnp.js
 
-# Build output
-dist/
-dist-ssr/
-
-# Environment files
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 backend/.env
 frontend/.env
+
+# Build directories
+dist/
+dist-ssr/
+/frontend/dist
+/backend/dist
 
 # Logs
 *.log

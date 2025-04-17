@@ -15,6 +15,10 @@ router.put("/update-profile",protectRoute,updateProfile)
 
 router.get("/check",protectRoute,checkAuth)
 
-
+router.stack.forEach((layer) => {
+  if (layer.route) {
+    console.log(`Auth Route registered: ${Object.keys(layer.route.methods)[0].toUpperCase()} ${layer.route.path}`);
+  }
+});
 
 export default router;

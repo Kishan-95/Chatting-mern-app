@@ -33,6 +33,11 @@ export const useChatStore = create((set,get) => ({
         try {
             const res = await axiosInstance.get(`/messages/${userId}`);
             set({messages:res.data})
+            
+            // Re-subscribe to messages whenever we load messages for a user
+            get().unsubscribeFromMessages();
+            get().subscribeToMessages();
+            
             toast.success('Messages loaded successfully')
 
         } catch (error) {
@@ -59,21 +64,49 @@ export const useChatStore = create((set,get) => ({
         const {selectedUser} = get()
         if(!selectedUser) return;
 
-        const socket  = useAuthStore.getState().socket
-        socket.on("newMessage",(newMessage)=>{
-            if(newMessage.senderId !== selectedUser._id) return
-            set({
-                messages:[...get().messages,newMessage]
-            })
-        })
-    },
-
-    unsubscribeFromMessages: () =>{
         const socket = useAuthStore.getState().socket
-        socket.off("newMessage")
-
+        if (!socket) {
+            console.log("Socket not connected");
+            return;
+        }
+        
+        console.log("Subscribing to messages");
+        
+        // Make sure we remove any existing listeners first
+        socket.off("newMessage");
+        
+        socket.on("newMessage",(newMessage)=>{
+            const currentSelectedUser = get().selectedUser;
+            if(!currentSelectedUser) return;
+            
+            // Check if the message is from or to the currently selected user
+            if(newMessage.senderId === currentSelectedUser._id || 
+               newMessage.receiverId === currentSelectedUser._id) {
+                console.log("New message received:", newMessage);
+                set({
+                    messages:[...get().messages, newMessage]
+                });
+            }
+        });
     },
 
-    setSelectedUser: (user) => set({selectedUser:user}),
+    unsubscribeFromMessages: () => {
+        const socket = useAuthStore.getState().socket
+        if (socket) {
+            console.log("Unsubscribing from messages");
+            socket.off("newMessage");
+        }
+    },
 
+    setSelectedUser: (user) => {
+        set({selectedUser:user});
+        
+        // When changing users, reset messages and re-setup socket subscription
+        if(user) {
+            get().getMessages(user._id);
+        } else {
+            set({messages: []});
+            get().unsubscribeFromMessages();
+        }
+    },
 }));

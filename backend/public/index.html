@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <script type="text/javascript">
+      // Dynamically set the API URL based on the current domain
+      window.API_BASE_URL = window.location.origin;
+    </script>
+    <link rel="stylesheet" href="/assets/index-BPBdmT2h.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/assets/index-CZ6-0JlR.js"></script>
+    <script type="text/javascript">
+      // Override axios baseURL and socket.io URL after the main script loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Find and patch any references to the hardcoded Codespace URL
+        const codespaceUrl = "https://fictional-space-train-r4wxrv9r46gvh599v-5001.app.github.dev";
+        
+        // Override fetch and XMLHttpRequest to intercept requests to the Codespace URL
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+          if (typeof url === 'string' && url.includes(codespaceUrl)) {
+            url = url.replace(codespaceUrl, window.location.origin);
+          }
+          return originalFetch.call(this, url, options);
+        };
+        
+        const originalOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+          if (typeof url === 'string' && url.includes(codespaceUrl)) {
+            url = url.replace(codespaceUrl, window.location.origin);
+          }
+          return originalOpen.call(this, method, url, ...rest);
+        };
+        
+        console.log('API URL patched to:', window.location.origin);
+      });
+    </script>
+  </body>
+</html>
