@@ -3,6 +3,10 @@
 A real-time chat application built with the MERN stack (MongoDB, Express, React, Node.js), optimized for both desktop and mobile devices.
 
 
+## This project is based on Mern Stack project: Realtime Chat App tutorial by Codesistency 
+https://youtu.be/ntKkVrQqBYY?si=hUD-cZhtMs4Kc0Jd
+
+
 ## ✨ Features
 
 - **Real-time messaging** powered by Socket.io
